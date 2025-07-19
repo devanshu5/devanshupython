@@ -1,768 +1,834 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Typing Test | DevanshuPython</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-  <style>
-    :root {
-      --primary: #4361ee;
-      --secondary: #3f37c9;
-      --accent: #4895ef;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --success: #4cc9f0;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .header {
-      background: rgba(0, 0, 0, 0.2);
-      color: white;
-      padding: 1.5rem;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .header.scrolled {
-      padding: 1rem;
-    }
-    
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-    }
-    
-    .logo i {
-      margin-right: 10px;
-      color: var(--accent);
-    }
-    
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-    }
-    
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      position: relative;
-      padding: 0.5rem 0;
-      transition: all 0.3s ease;
-    }
-    
-    nav ul li a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: var(--accent);
-      transition: width 0.3s ease;
-    }
-    
-    nav ul li a:hover::after {
-      width: 100%;
-    }
-    
-    .hamburger {
-      display: none;
-      cursor: pointer;
-      font-size: 1.5rem;
-    }
-    
-    .typing-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8rem 2rem 4rem;
-      text-align: center;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    
-    .typing-header {
-      margin-bottom: 3rem;
-    }
-    
-    .typing-header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      background: linear-gradient(to right, #fff, #f1c40f);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .typing-header p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
-    
-    .typing-test {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-      margin-bottom: 2rem;
-    }
-    
-    .quote-display {
-      font-size: 1.5rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-      min-height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    
-    .quote-display::before,
-    .quote-display::after {
-      content: '"';
-      font-size: 3rem;
-      color: rgba(255,255,255,0.3);
-      position: absolute;
-    }
-    
-    .quote-display::before {
-      top: -20px;
-      left: -20px;
-    }
-    
-    .quote-display::after {
-      bottom: -40px;
-      right: -20px;
-    }
-    
-    .quote-input {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.9);
-      margin-bottom: 1.5rem;
-      transition: all 0.3s ease;
-    }
-    
-    .quote-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
-      background: white;
-    }
-    
-    .timer {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      color: var(--accent);
-    }
-    
-    .controls {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    
-    .btn {
-      padding: 0.8rem 2rem;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
-    }
-    
-    .btn-primary:hover {
-      background: var(--secondary);
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(67, 97, 238, 0.4);
-    }
-    
-    .btn-outline {
-      background: transparent;
-      color: white;
-      border: 2px solid white;
-    }
-    
-    .btn-outline:hover {
-      background: white;
-      color: var(--primary);
-      transform: translateY(-3px);
-    }
-    
-    .results {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-      margin-bottom: 2rem;
-      display: none;
-    }
-    
-    .results.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .results h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      color: var(--accent);
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    
-    .stat-card {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    
-    .stat-card:hover {
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-5px);
-    }
-    
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: var(--accent);
-    }
-    
-    .stat-label {
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-    
-    .difficulty-selector {
-      margin-bottom: 2rem;
-    }
-    
-    .difficulty-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .difficulty-btn {
-      padding: 0.6rem 1.5rem;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-      background: rgba(255,255,255,0.1);
-      color: white;
-    }
-    
-    .difficulty-btn.active {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    
-    .difficulty-btn:hover:not(.active) {
-      background: rgba(255,255,255,0.2);
-    }
-    
-    .footer {
-      background: rgba(0, 0, 0, 0.2);
-      color: white;
-      padding: 2rem;
-      text-align: center;
-      width: 100%;
-      backdrop-filter: blur(10px);
-    }
-    
-    .footer p {
-      opacity: 0.8;
-    }
-    
-    /* Typing effect */
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1.2em;
-      background: var(--accent);
-      vertical-align: middle;
-      margin-left: 2px;
-      animation: blink 1s infinite;
-    }
-    
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    
-    .correct {
-      color: #4ade80;
-    }
-    
-    .incorrect {
-      color: #f87171;
-      text-decoration: underline;
-    }
-    
-    /* Responsive */
-    @media (max-width: 992px) {
-      .typing-header h1 {
-        font-size: 2.2rem;
-      }
-      
-      .quote-display {
-        font-size: 1.3rem;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .header-container {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      nav ul {
-        margin-top: 1rem;
-        gap: 1rem;
-      }
-      
-      .typing-header h1 {
-        font-size: 2rem;
-      }
-      
-      .quote-display {
-        font-size: 1.1rem;
-        min-height: 100px;
-      }
-      
-      .controls {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-    
-    @media (max-width: 576px) {
-      .header {
-        padding: 1rem;
-      }
-      
-      .logo {
-        font-size: 1.5rem;
-      }
-      
-      nav {
-        display: none;
-      }
-      
-      nav.active {
-        display: block;
-        width: 100%;
-        margin-top: 1rem;
-      }
-      
-      nav ul {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .hamburger {
-        display: block;
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-      }
-      
-      .typing-header h1 {
-        font-size: 1.8rem;
-      }
-      
-      .typing-container {
-        padding: 8rem 1rem 4rem;
-      }
-      
-      .typing-test {
-        padding: 1.5rem;
-      }
-      
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Typing Test | DevanshuPython</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --python-blue: #3776ab;
+            --python-yellow: #ffd43b;
+            --python-light: #f8f9fa;
+            --python-dark: #1e415e;
+            --correct: #4ade80;
+            --incorrect: #f87171;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f7ff 0%, #d9ebff 100%);
+            color: var(--python-dark);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: var(--python-dark);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--python-yellow);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--python-yellow);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .typing-container {
+            padding: 8rem 2rem 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .typing-header {
+            margin-bottom: 3rem;
+        }
+        
+        .typing-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--python-dark);
+        }
+        
+        .typing-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .difficulty-selector {
+            margin-bottom: 2rem;
+        }
+        
+        .difficulty-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            color: var(--python-blue);
+            border: 2px solid var(--python-blue);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .difficulty-btn.active {
+            background: var(--python-blue);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .difficulty-btn:hover:not(.active) {
+            background: rgba(55, 118, 171, 0.1);
+        }
+        
+        .typing-test {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .words-display {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            min-height: 120px;
+            margin-bottom: 2rem;
+            text-align: left;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .word {
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .word.current {
+            background: rgba(55, 118, 171, 0.1);
+            border-radius: 4px;
+        }
+        
+        .word.correct {
+            color: var(--correct);
+        }
+        
+        .word.incorrect {
+            color: var(--incorrect);
+            text-decoration: underline;
+        }
+        
+        .typing-input-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--python-blue);
+            min-width: 60px;
+        }
+        
+        .typing-input {
+            flex: 1;
+            max-width: 600px;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .typing-input:focus {
+            border-color: var(--python-blue);
+            box-shadow: 0 0 0 3px rgba(55, 118, 171, 0.2);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--python-blue);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary:hover {
+            background: #2c5d8a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .btn-outline {
+            background: white;
+            color: var(--python-blue);
+            border: 2px solid var(--python-blue);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(55, 118, 171, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .results.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .results h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--python-blue);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 3px solid var(--python-blue);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--python-blue);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .footer {
+            background: var(--python-dark);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer-logo i {
+            margin-right: 10px;
+            color: var(--python-yellow);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--python-yellow);
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .typing-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+            
+            .typing-header h1 {
+                font-size: 2rem;
+            }
+            
+            .typing-input-container {
+                flex-direction: column;
+            }
+            
+            .typing-input {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                padding: 0.8rem;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .hamburger {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .typing-container {
+                padding: 6rem 1.5rem 2rem;
+            }
+            
+            .typing-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .difficulty-buttons {
+                flex-direction: column;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-container">
-      <div class="logo">
-        <i class="fas fa-code"></i>
-        DevanshuPython
-      </div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="typing-test.html">Typing Test</a></li>
-          <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-      <div class="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-  </header>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-python"></i>
+                DevanshuPython
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="typing-test.html">Typing Test</a></li>
+                    <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
 
-  <main class="typing-container" data-aos="fade-up">
-    <div class="typing-header">
-      <h1>Programming Typing Test</h1>
-      <p>Test and improve your typing speed with code snippets and programming quotes</p>
-    </div>
-    
-    <div class="difficulty-selector">
-      <h3>Select Difficulty:</h3>
-      <div class="difficulty-buttons">
-        <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
-        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
-        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
-        <button class="difficulty-btn" data-difficulty="python">Python</button>
-      </div>
-    </div>
-    
-    <div class="typing-test">
-      <div class="timer" id="timer">60</div>
-      <div class="quote-display" id="quoteDisplay">Click Start to begin the test</div>
-      <textarea class="quote-input" id="quoteInput" placeholder="Start typing here when the test begins..." disabled></textarea>
-      <div class="controls">
-        <button class="btn btn-primary" id="startBtn">
-          <i class="fas fa-play"></i> Start Test
-        </button>
-        <button class="btn btn-outline" id="newQuoteBtn" disabled>
-          <i class="fas fa-sync-alt"></i> New Quote
-        </button>
-      </div>
-    </div>
-    
-    <div class="results" id="results">
-      <h2>Your Results</h2>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="wpm">0</div>
-          <div class="stat-label">Words Per Minute</div>
+    <main class="typing-container">
+        <div class="typing-header">
+            <h1>Python Typing Test</h1>
+            <p>Test and improve your typing speed with Python-related content</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="accuracy">0%</div>
-          <div class="stat-label">Accuracy</div>
+        
+        <div class="difficulty-selector">
+            <h3>Select Difficulty:</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                <button class="difficulty-btn" data-difficulty="python">Python Code</button>
+            </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="cpm">0</div>
-          <div class="stat-label">Chars Per Minute</div>
+        
+        <div class="typing-test">
+            <div class="words-display" id="wordsDisplay">
+                Click "Start Test" to begin the typing challenge
+            </div>
+            
+            <div class="typing-input-container">
+                <div class="timer" id="timer">1:00</div>
+                <input type="text" class="typing-input" id="typingInput" placeholder="Start typing here when the test begins..." disabled>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="startBtn">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+                <button class="btn btn-outline" id="newTestBtn" disabled>
+                    <i class="fas fa-sync-alt"></i> New Test
+                </button>
+            </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="errors">0</div>
-          <div class="stat-label">Errors</div>
+        
+        <div class="results" id="results">
+            <h2>Your Results</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="wpm">0</div>
+                    <div class="stat-label">Words Per Minute</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="cpm">0</div>
+                    <div class="stat-label">Chars Per Minute</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="errors">0</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="tryAgainBtn" style="margin-top: 2rem;">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
         </div>
-      </div>
-      <button class="btn btn-primary" id="tryAgainBtn" style="margin-top: 2rem;">
-        <i class="fas fa-redo"></i> Try Again
-      </button>
-    </div>
-  </main>
+    </main>
 
-  <footer class="footer">
-    <p>&copy; 2025 DevanshuPython. All rights reserved.</p>
-  </footer>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <i class="fab fa-python"></i>
+                DevanshuPython
+            </div>
+            <p>Improve your typing speed while learning Python concepts</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="typing-test.html">Typing Test</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 DevanshuPython. All rights reserved.
+            </div>
+        </div>
+    </footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    // Initialize AOS animations
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true
-    });
-    
-    // Header scroll effect
-    const header = document.querySelector('.header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    });
-    
-    // Mobile menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const nav = document.querySelector('nav');
-    
-    hamburger.addEventListener('click', () => {
-      nav.classList.toggle('active');
-    });
-    
-    // Typing Test Logic
-    const quoteDisplay = document.getElementById('quoteDisplay');
-    const quoteInput = document.getElementById('quoteInput');
-    const timerElement = document.getElementById('timer');
-    const startBtn = document.getElementById('startBtn');
-    const newQuoteBtn = document.getElementById('newQuoteBtn');
-    const tryAgainBtn = document.getElementById('tryAgainBtn');
-    const resultsDiv = document.getElementById('results');
-    const wpmElement = document.getElementById('wpm');
-    const accuracyElement = document.getElementById('accuracy');
-    const cpmElement = document.getElementById('cpm');
-    const errorsElement = document.getElementById('errors');
-    const difficultyButtons = document.querySelectorAll('.difficulty-btn');
-    
-    let timer;
-    let timeLeft = 60;
-    let isTestRunning = false;
-    let currentQuote = '';
-    let difficulty = 'easy';
-    
-    // Quotes for different difficulty levels
-    const quotes = {
-      easy: [
-        "The quick brown fox jumps over the lazy dog.",
-        "The quick brown fox jumps over the lazy dog.",
-        "The quick brown fox jumps over the lazy dog.",
-        "The quick brown fox jumps over the lazy dog.",
-      ],
-      medium: [
-        "The best way to learn programming is by writing actual code.",
-        "Debugging is twice as hard as writing the code in the first place.",
-        "Good code is its own best documentation. Add comments only when needed.",
-        "First, solve the problem. Then, write the code to implement the solution."
-      ],
-      hard: [
-        "Software and cathedrals are much the same - first we build them, then we pray.",
-        "Programming is the art of telling another human what one wants the computer to do.",
-        "The most disastrous thing that you can ever learn is your first programming language.",
-        "The function of good software is to make the complex appear to be simple."
-      ],
-      python: [
-        "In Python, lists are mutable while tuples are immutable data structures.",
-        "Python uses dynamic typing and duck typing for variable declarations.",
-        "List comprehensions provide a concise way to create lists in Python.",
-        "The Zen of Python states that 'Simple is better than complex' and 'Readability counts'."
-      ]
-    };
-    
-    // Initialize the test
-    function initTest() {
-      // Reset values
-      timeLeft = 60;
-      timerElement.textContent = timeLeft;
-      quoteInput.value = '';
-      quoteInput.disabled = false;
-      quoteInput.focus();
-      isTestRunning = true;
-      startBtn.disabled = true;
-      newQuoteBtn.disabled = true;
-      
-      // Start timer
-      timer = setInterval(() => {
-        timeLeft--;
-        timerElement.textContent = timeLeft;
+    <script>
+        // Difficulty levels with different content
+        const content = {
+            easy: [
+                "Python is a popular programming language",
+                "It was created by Guido van Rossum",
+                "Python has simple easy to use syntax",
+                "Python works on different platforms",
+                "Python can be used for web development",
+                "It can also be used for data analysis",
+                "Python has many useful libraries",
+                "The print function displays output",
+                "Variables store data values",
+                "Lists store multiple items in one variable"
+            ],
+            medium: [
+                "Python supports multiple programming paradigms",
+                "List comprehensions provide concise syntax",
+                "Dictionaries store data as key-value pairs",
+                "Functions help organize and reuse code",
+                "Modules are files containing Python code",
+                "Exception handling prevents program crashes",
+                "Object-oriented programming uses classes",
+                "The Zen of Python outlines Python principles",
+                "Virtual environments isolate project dependencies",
+                "PIP is Python's package installer"
+            ],
+            hard: [
+                "Decorators modify function behavior without changing code",
+                "Generators create iterators with yield statements",
+                "Context managers handle resource allocation",
+                "Metaclasses customize class creation behavior",
+                "Descriptors manage attribute access in classes",
+                "Asyncio enables asynchronous programming",
+                "Type hints improve code documentation",
+                "Dunder methods enable operator overloading",
+                "Python's GIL affects multi-threading performance",
+                "Abstract base classes define interfaces"
+            ],
+            python: [
+                "def calculate_average(numbers): return sum(numbers)/len(numbers)",
+                "for i in range(10): print(i**2) if i%2==0 else print(i)",
+                "[x for x in range(100) if x%3==0 and x%5==0]",
+                "with open('data.txt') as f: contents = f.read()",
+                "import math; hypotenuse = math.sqrt(a**2 + b**2)",
+                "class Rectangle: def __init__(self,w,h): self.width=w; self.height=h",
+                "try: result = x/y except ZeroDivisionError: print('Cannot divide by zero')",
+                "@app.route('/') def home(): return render_template('index.html')",
+                "df = pd.DataFrame(data={'col1': [1,2], 'col2': [3,4]})",
+                "async def fetch_data(): async with aiohttp.ClientSession() as session: pass"
+            ]
+        };
+
+        // DOM elements
+        const wordsDisplay = document.getElementById('wordsDisplay');
+        const typingInput = document.getElementById('typingInput');
+        const timerElement = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const newTestBtn = document.getElementById('newTestBtn');
+        const tryAgainBtn = document.getElementById('tryAgainBtn');
+        const resultsDiv = document.getElementById('results');
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
         
-        if (timeLeft <= 0) {
-          endTest();
-        }
-      }, 1000);
-      
-      // Display new quote
-      displayNewQuote();
-    }
-    
-    // Display a new quote
-    function displayNewQuote() {
-      const quoteArray = quotes[difficulty];
-      const randomIndex = Math.floor(Math.random() * quoteArray.length);
-      currentQuote = quoteArray[randomIndex];
-      quoteDisplay.innerHTML = '';
-      
-      // Create span for each character for styling
-      currentQuote.split('').forEach(char => {
-        const charSpan = document.createElement('span');
-        charSpan.innerText = char;
-        quoteDisplay.appendChild(charSpan);
-      });
-    }
-    
-    // End the test
-    function endTest() {
-      clearInterval(timer);
-      isTestRunning = false;
-      quoteInput.disabled = true;
-      startBtn.disabled = false;
-      newQuoteBtn.disabled = false;
-      
-      // Calculate results
-      calculateResults();
-      
-      // Show results
-      resultsDiv.classList.add('active');
-    }
-    
-    // Calculate typing results
-    function calculateResults() {
-      const typedText = quoteInput.value;
-      const quoteText = currentQuote;
-      const timeInMinutes = (60 - timeLeft) / 60;
-      
-      // Calculate words per minute (WPM)
-      const wordsTyped = typedText.trim().split(/\s+/).length;
-      const wpm = Math.round(wordsTyped / timeInMinutes);
-      
-      // Calculate characters per minute (CPM)
-      const charsTyped = typedText.length;
-      const cpm = Math.round(charsTyped / timeInMinutes);
-      
-      // Calculate accuracy
-      let correctChars = 0;
-      for (let i = 0; i < typedText.length; i++) {
-        if (typedText[i] === quoteText[i]) {
-          correctChars++;
-        }
-      }
-      const accuracy = Math.round((correctChars / quoteText.length) * 100);
-      
-      // Calculate errors
-      const errors = Math.max(0, typedText.length - correctChars);
-      
-      // Display results
-      wpmElement.textContent = wpm;
-      accuracyElement.textContent = accuracy + '%';
-      cpmElement.textContent = cpm;
-      errorsElement.textContent = errors;
-    }
-    
-    // Highlight correct/incorrect characters in real-time
-    quoteInput.addEventListener('input', () => {
-      const typedArray = quoteInput.value.split('');
-      const quoteArray = currentQuote.split('');
-      
-      quoteDisplay.querySelectorAll('span').forEach((charSpan, index) => {
-        const typedChar = typedArray[index];
-        const quoteChar = quoteArray[index];
+        // Stats elements
+        const wpmElement = document.getElementById('wpm');
+        const accuracyElement = document.getElementById('accuracy');
+        const cpmElement = document.getElementById('cpm');
+        const errorsElement = document.getElementById('errors');
         
-        if (typedChar == null) {
-          charSpan.classList.remove('correct', 'incorrect');
-        } else if (typedChar === quoteChar) {
-          charSpan.classList.add('correct');
-          charSpan.classList.remove('incorrect');
-        } else {
-          charSpan.classList.add('incorrect');
-          charSpan.classList.remove('correct');
+        // Test variables
+        let timeLeft = 60;
+        let timer;
+        let isTestRunning = false;
+        let currentDifficulty = 'easy';
+        let words = [];
+        let currentWordIndex = 0;
+        let correctChars = 0;
+        let totalChars = 0;
+        let errors = 0;
+        let startTime, endTime;
+
+        // Initialize the test
+        function initTest() {
+            // Reset values
+            timeLeft = 60;
+            timerElement.textContent = '1:00';
+            typingInput.value = '';
+            typingInput.disabled = false;
+            typingInput.focus();
+            isTestRunning = true;
+            startBtn.disabled = true;
+            newTestBtn.disabled = true;
+            resultsDiv.classList.remove('active');
+            
+            // Get words based on difficulty
+            words = getRandomWords(currentDifficulty);
+            currentWordIndex = 0;
+            correctChars = 0;
+            totalChars = 0;
+            errors = 0;
+            
+            // Display words
+            displayWords();
+            
+            // Start timer
+            startTime = new Date();
+            timer = setInterval(updateTimer, 1000);
         }
-      });
-    });
-    
-    // Event listeners
-    startBtn.addEventListener('click', initTest);
-    
-    newQuoteBtn.addEventListener('click', () => {
-      displayNewQuote();
-      quoteInput.value = '';
-    });
-    
-    tryAgainBtn.addEventListener('click', () => {
-      resultsDiv.classList.remove('active');
-      initTest();
-    });
-    
-    // Difficulty selection
-    difficultyButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        difficultyButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        difficulty = button.dataset.difficulty;
+
+        // Get random words for the selected difficulty
+        function getRandomWords(difficulty) {
+            const allWords = content[difficulty];
+            const shuffled = [...allWords].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 10); // Use 10 phrases for the test
+        }
+
+        // Display words in the test area
+        function displayWords() {
+            wordsDisplay.innerHTML = '';
+            
+            words.forEach((word, index) => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'word';
+                wordSpan.textContent = word + ' ';
+                wordSpan.id = `word-${index}`;
+                wordsDisplay.appendChild(wordSpan);
+            });
+            
+            // Highlight first word
+            document.getElementById(`word-${currentWordIndex}`).classList.add('current');
+        }
+
+        // Update timer countdown
+        function updateTimer() {
+            timeLeft--;
+            
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            if (timeLeft <= 0) {
+                endTest();
+            }
+        }
+
+        // End the test
+        function endTest() {
+            clearInterval(timer);
+            isTestRunning = false;
+            typingInput.disabled = true;
+            startBtn.disabled = false;
+            newTestBtn.disabled = false;
+            endTime = new Date();
+            
+            // Calculate results
+            calculateResults();
+            
+            // Show results
+            resultsDiv.classList.add('active');
+        }
+
+        // Calculate test results
+        function calculateResults() {
+            const timeInMinutes = (endTime - startTime) / 1000 / 60;
+            const wordsTyped = correctChars / 5; // Standard word length is 5 chars
+            const wpm = Math.round(wordsTyped / timeInMinutes);
+            
+            // Calculate accuracy
+            const accuracy = Math.round((correctChars / totalChars) * 100) || 0;
+            
+            // Calculate characters per minute
+            const cpm = Math.round(totalChars / timeInMinutes);
+            
+            // Display results
+            wpmElement.textContent = wpm;
+            accuracyElement.textContent = accuracy + '%';
+            cpmElement.textContent = cpm;
+            errorsElement.textContent = errors;
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', initTest);
         
-        if (!isTestRunning) {
-          displayNewQuote();
-        }
-      });
-    });
-    
-    // Initialize with easy quotes
-    displayNewQuote();
-  </script>
+        newTestBtn.addEventListener('click', () => {
+            words = getRandomWords(currentDifficulty);
+            currentWordIndex = 0;
+            displayWords();
+            typingInput.value = '';
+        });
+        
+        tryAgainBtn.addEventListener('click', () => {
+            resultsDiv.classList.remove('active');
+            initTest();
+        });
+        
+        // Handle typing input
+        typingInput.addEventListener('input', (e) => {
+            if (!isTestRunning) return;
+            
+            const currentWord = words[currentWordIndex];
+            const inputValue = typingInput.value.trim();
+            
+            // Check if current word is completed
+            if (inputValue === currentWord) {
+                // Mark word as correct
+                document.getElementById(`word-${currentWordIndex}`).classList.remove('current');
+                document.getElementById(`word-${currentWordIndex}`).classList.add('correct');
+                
+                // Update stats
+                correctChars += currentWord.length;
+                totalChars += currentWord.length;
+                
+                // Move to next word
+                currentWordIndex++;
+                typingInput.value = '';
+                
+                // Check if test is complete
+                if (currentWordIndex >= words.length) {
+                    words = getRandomWords(currentDifficulty);
+                    currentWordIndex = 0;
+                    displayWords();
+                } else {
+                    // Highlight next word
+                    document.getElementById(`word-${currentWordIndex}`).classList.add('current');
+                }
+            } else {
+                // Check for errors
+                if (inputValue !== currentWord.substring(0, inputValue.length)) {
+                    errors++;
+                    document.getElementById(`word-${currentWordIndex}`).classList.add('incorrect');
+                } else {
+                    document.getElementById(`word-${currentWordIndex}`).classList.remove('incorrect');
+                }
+                
+                // Update total chars (for CPM calculation)
+                totalChars = correctChars + inputValue.length;
+            }
+        });
+        
+        // Handle difficulty selection
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                difficultyButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentDifficulty = button.dataset.difficulty;
+                
+                if (!isTestRunning) {
+                    words = getRandomWords(currentDifficulty);
+                    currentWordIndex = 0;
+                    displayWords();
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('nav');
+        
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        
+        // Initialize with easy words
+        words = getRandomWords('easy');
+        displayWords();
+    </script>
 </body>
 </html>
