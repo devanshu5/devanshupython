@@ -1,59 +1,768 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="DevanshuPython - Fun Learning Platform for Students and Teachers" />
-  <title>DevanshuPython - Learn with Fun</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test | DevanshuPython</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4895ef;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      padding: 1.5rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .header.scrolled {
+      padding: 1rem;
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      margin-right: 10px;
+      color: var(--accent);
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+    
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+    
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+    
+    .typing-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .typing-header {
+      margin-bottom: 3rem;
+    }
+    
+    .typing-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #fff, #f1c40f);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .typing-header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    
+    .typing-test {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      margin-bottom: 2rem;
+    }
+    
+    .quote-display {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .quote-display::before,
+    .quote-display::after {
+      content: '"';
+      font-size: 3rem;
+      color: rgba(255,255,255,0.3);
+      position: absolute;
+    }
+    
+    .quote-display::before {
+      top: -20px;
+      left: -20px;
+    }
+    
+    .quote-display::after {
+      bottom: -40px;
+      right: -20px;
+    }
+    
+    .quote-input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.9);
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .quote-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+      background: white;
+    }
+    
+    .timer {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+    }
+    
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(67, 97, 238, 0.4);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+    
+    .btn-outline:hover {
+      background: white;
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .results {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      margin-bottom: 2rem;
+      display: none;
+    }
+    
+    .results.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .results h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .stat-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-5px);
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .difficulty-selector {
+      margin-bottom: 2rem;
+    }
+    
+    .difficulty-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .difficulty-btn {
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    
+    .difficulty-btn.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .difficulty-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.2);
+    }
+    
+    .footer {
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      width: 100%;
+      backdrop-filter: blur(10px);
+    }
+    
+    .footer p {
+      opacity: 0.8;
+    }
+    
+    /* Typing effect */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    
+    .correct {
+      color: #4ade80;
+    }
+    
+    .incorrect {
+      color: #f87171;
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .typing-header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .quote-display {
+        font-size: 1.3rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      nav ul {
+        margin-top: 1rem;
+        gap: 1rem;
+      }
+      
+      .typing-header h1 {
+        font-size: 2rem;
+      }
+      
+      .quote-display {
+        font-size: 1.1rem;
+        min-height: 100px;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .header {
+        padding: 1rem;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+      }
+      
+      nav {
+        display: none;
+      }
+      
+      nav.active {
+        display: block;
+        width: 100%;
+        margin-top: 1rem;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .hamburger {
+        display: block;
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+      }
+      
+      .typing-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .typing-container {
+        padding: 8rem 1rem 4rem;
+      }
+      
+      .typing-test {
+        padding: 1.5rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header class="header" data-aos="fade-down">
-    <h1>DevanshuPython</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="typing-test.html">Typing Test</a></li>
-        <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <i class="fas fa-code"></i>
+        DevanshuPython
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="typing-test.html">Typing Test</a></li>
+          <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
   </header>
 
-  <section class="hero" data-aos="fade-up">
-    <h2>Welcome to DevanshuPython</h2>
-    <p>Fun and engaging platform for students & teachers</p>
-    <a href="typing-test.html" class="btn">Try Typing Test</a>
-  </section>
+  <main class="typing-container" data-aos="fade-up">
+    <div class="typing-header">
+      <h1>Programming Typing Test</h1>
+      <p>Test and improve your typing speed with code snippets and programming quotes</p>
+    </div>
+    
+    <div class="difficulty-selector">
+      <h3>Select Difficulty:</h3>
+      <div class="difficulty-buttons">
+        <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+        <button class="difficulty-btn" data-difficulty="python">Python</button>
+      </div>
+    </div>
+    
+    <div class="typing-test">
+      <div class="timer" id="timer">60</div>
+      <div class="quote-display" id="quoteDisplay">Click Start to begin the test</div>
+      <textarea class="quote-input" id="quoteInput" placeholder="Start typing here when the test begins..." disabled></textarea>
+      <div class="controls">
+        <button class="btn btn-primary" id="startBtn">
+          <i class="fas fa-play"></i> Start Test
+        </button>
+        <button class="btn btn-outline" id="newQuoteBtn" disabled>
+          <i class="fas fa-sync-alt"></i> New Quote
+        </button>
+      </div>
+    </div>
+    
+    <div class="results" id="results">
+      <h2>Your Results</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="wpm">0</div>
+          <div class="stat-label">Words Per Minute</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="accuracy">0%</div>
+          <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="cpm">0</div>
+          <div class="stat-label">Chars Per Minute</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="errors">0</div>
+          <div class="stat-label">Errors</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="tryAgainBtn" style="margin-top: 2rem;">
+        <i class="fas fa-redo"></i> Try Again
+      </button>
+    </div>
+  </main>
 
-  <section class="features" data-aos="fade-up">
-    <div class="feature-box">
-      <h3>Interactive Learning</h3>
-      <p>Animations, transitions and practical tools for better learning.</p>
-    </div>
-    <div class="feature-box">
-      <h3>Typing Practice</h3>
-      <p>Measure your typing speed and accuracy with our custom tool.</p>
-    </div>
-    <div class="feature-box">
-      <h3>Teacher Friendly</h3>
-      <p>Help teachers share, assess and engage more effectively.</p>
-    </div>
-  </section>
-
-  <footer class="footer" data-aos="fade-up">
+  <footer class="footer">
     <p>&copy; 2025 DevanshuPython. All rights reserved.</p>
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init();
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+    
+    // Header scroll effect
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+    
+    // Typing Test Logic
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    const quoteInput = document.getElementById('quoteInput');
+    const timerElement = document.getElementById('timer');
+    const startBtn = document.getElementById('startBtn');
+    const newQuoteBtn = document.getElementById('newQuoteBtn');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+    const resultsDiv = document.getElementById('results');
+    const wpmElement = document.getElementById('wpm');
+    const accuracyElement = document.getElementById('accuracy');
+    const cpmElement = document.getElementById('cpm');
+    const errorsElement = document.getElementById('errors');
+    const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+    
+    let timer;
+    let timeLeft = 60;
+    let isTestRunning = false;
+    let currentQuote = '';
+    let difficulty = 'easy';
+    
+    // Quotes for different difficulty levels
+    const quotes = {
+      easy: [
+        "The quick brown fox jumps over the lazy dog.",
+        "The quick brown fox jumps over the lazy dog.",
+        "The quick brown fox jumps over the lazy dog.",
+        "The quick brown fox jumps over the lazy dog.",
+      ],
+      medium: [
+        "The best way to learn programming is by writing actual code.",
+        "Debugging is twice as hard as writing the code in the first place.",
+        "Good code is its own best documentation. Add comments only when needed.",
+        "First, solve the problem. Then, write the code to implement the solution."
+      ],
+      hard: [
+        "Software and cathedrals are much the same - first we build them, then we pray.",
+        "Programming is the art of telling another human what one wants the computer to do.",
+        "The most disastrous thing that you can ever learn is your first programming language.",
+        "The function of good software is to make the complex appear to be simple."
+      ],
+      python: [
+        "In Python, lists are mutable while tuples are immutable data structures.",
+        "Python uses dynamic typing and duck typing for variable declarations.",
+        "List comprehensions provide a concise way to create lists in Python.",
+        "The Zen of Python states that 'Simple is better than complex' and 'Readability counts'."
+      ]
+    };
+    
+    // Initialize the test
+    function initTest() {
+      // Reset values
+      timeLeft = 60;
+      timerElement.textContent = timeLeft;
+      quoteInput.value = '';
+      quoteInput.disabled = false;
+      quoteInput.focus();
+      isTestRunning = true;
+      startBtn.disabled = true;
+      newQuoteBtn.disabled = true;
+      
+      // Start timer
+      timer = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+          endTest();
+        }
+      }, 1000);
+      
+      // Display new quote
+      displayNewQuote();
+    }
+    
+    // Display a new quote
+    function displayNewQuote() {
+      const quoteArray = quotes[difficulty];
+      const randomIndex = Math.floor(Math.random() * quoteArray.length);
+      currentQuote = quoteArray[randomIndex];
+      quoteDisplay.innerHTML = '';
+      
+      // Create span for each character for styling
+      currentQuote.split('').forEach(char => {
+        const charSpan = document.createElement('span');
+        charSpan.innerText = char;
+        quoteDisplay.appendChild(charSpan);
+      });
+    }
+    
+    // End the test
+    function endTest() {
+      clearInterval(timer);
+      isTestRunning = false;
+      quoteInput.disabled = true;
+      startBtn.disabled = false;
+      newQuoteBtn.disabled = false;
+      
+      // Calculate results
+      calculateResults();
+      
+      // Show results
+      resultsDiv.classList.add('active');
+    }
+    
+    // Calculate typing results
+    function calculateResults() {
+      const typedText = quoteInput.value;
+      const quoteText = currentQuote;
+      const timeInMinutes = (60 - timeLeft) / 60;
+      
+      // Calculate words per minute (WPM)
+      const wordsTyped = typedText.trim().split(/\s+/).length;
+      const wpm = Math.round(wordsTyped / timeInMinutes);
+      
+      // Calculate characters per minute (CPM)
+      const charsTyped = typedText.length;
+      const cpm = Math.round(charsTyped / timeInMinutes);
+      
+      // Calculate accuracy
+      let correctChars = 0;
+      for (let i = 0; i < typedText.length; i++) {
+        if (typedText[i] === quoteText[i]) {
+          correctChars++;
+        }
+      }
+      const accuracy = Math.round((correctChars / quoteText.length) * 100);
+      
+      // Calculate errors
+      const errors = Math.max(0, typedText.length - correctChars);
+      
+      // Display results
+      wpmElement.textContent = wpm;
+      accuracyElement.textContent = accuracy + '%';
+      cpmElement.textContent = cpm;
+      errorsElement.textContent = errors;
+    }
+    
+    // Highlight correct/incorrect characters in real-time
+    quoteInput.addEventListener('input', () => {
+      const typedArray = quoteInput.value.split('');
+      const quoteArray = currentQuote.split('');
+      
+      quoteDisplay.querySelectorAll('span').forEach((charSpan, index) => {
+        const typedChar = typedArray[index];
+        const quoteChar = quoteArray[index];
+        
+        if (typedChar == null) {
+          charSpan.classList.remove('correct', 'incorrect');
+        } else if (typedChar === quoteChar) {
+          charSpan.classList.add('correct');
+          charSpan.classList.remove('incorrect');
+        } else {
+          charSpan.classList.add('incorrect');
+          charSpan.classList.remove('correct');
+        }
+      });
+    });
+    
+    // Event listeners
+    startBtn.addEventListener('click', initTest);
+    
+    newQuoteBtn.addEventListener('click', () => {
+      displayNewQuote();
+      quoteInput.value = '';
+    });
+    
+    tryAgainBtn.addEventListener('click', () => {
+      resultsDiv.classList.remove('active');
+      initTest();
+    });
+    
+    // Difficulty selection
+    difficultyButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        difficultyButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        difficulty = button.dataset.difficulty;
+        
+        if (!isTestRunning) {
+          displayNewQuote();
+        }
+      });
+    });
+    
+    // Initialize with easy quotes
+    displayNewQuote();
   </script>
-  <script src="js/script.js"></script>
 </body>
 </html>
