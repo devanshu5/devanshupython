@@ -1,91 +1,57 @@
-<!-- about.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About - DevanshuPython</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      color: #333;
-      overflow-x: hidden;
-    }
-    .header {
-      background: linear-gradient(to right, #1e3c72, #2a5298);
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 10px 0 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .content {
-      max-width: 900px;
-      margin: 50px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      animation: slideIn 1s ease;
-    }
-    @keyframes slideIn {
-      from { transform: translateY(40px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: #1e3c72;
-      color: #fff;
-      margin-top: 40px;
-    }
-  </style>
 </head>
 <body>
   <header class="header" data-aos="fade-down">
-    <h1>About DevanshuPython</h1>
+    <h1>DevanshuPython</h1>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="typing-test.html">Typing Test</a></li>
-        <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
   </header>
 
-  <main class="content" data-aos="fade-up">
-    <h2>Welcome to DevanshuPython</h2>
-    <p>🚀 DevanshuPython is your go-to platform for learning tech in an engaging way. Designed with stunning visuals, animations, and real-world tools, this site offers an experience where education meets fun!</p>
-    <ul>
-      <li>📚 Interactive Courses</li>
-      <li>⌨️ Typing Speed Practice</li>
-      <li>🎓 Teacher and Student Friendly</li>
-      <li>🎨 Smooth transitions and animations</li>
-    </ul>
-  </main>
+  <section class="about-section" data-aos="fade-up">
+    <h2>About DevanshuPython</h2>
+    <p>DevanshuPython is designed to make digital learning practical and fun. Whether you're a student looking to improve your typing speed or a teacher trying to build engagement, our platform is built for you.</p>
+    <p>Our tools and lessons come with animations, gamified content, and responsive layouts for easy access from any device.</p>
+    <p>Join us and be a part of the new education era where learning is interactive and exciting!</p>
+
+    <!-- YouTube Embed -->
+    <div style="margin-top: 30px;" data-aos="zoom-in">
+      <h3>🎥 Watch Our Latest YouTube Short</h3>
+      <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-top: 10px;">
+        <iframe 
+          src="https://www.youtube.com/embed?listType=user_uploads&list=dev11ify" 
+          title="Dev11ify Shorts"
+          allowfullscreen
+          frameborder="0"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        </iframe>
+      </div>
+    </div>
+  </section>
 
   <footer class="footer" data-aos="fade-up">
     <p>&copy; 2025 DevanshuPython. All rights reserved.</p>
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init();</script>
+  <script>
+    AOS.init();
+  </script>
 </body>
 </html>
