@@ -3,140 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Typing Test - DevanshuPython</title>
+  <title>Typing Test | DevanshuPython</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #667eea, #764ba2);
-      color: #fff;
       margin: 0;
       padding: 0;
-    }
-    .container {
-      max-width: 900px;
-      margin: 60px auto;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      text-align: center;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    .quote-box {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      font-size: 1.2em;
-    }
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      font-size: 1em;
-      border-radius: 10px;
-      border: none;
-      resize: none;
-      outline: none;
-      margin-bottom: 20px;
-    }
-    .stats {
+      color: #fff;
       display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
-    .stats div {
-      background: rgba(255,255,255,0.1);
+    header {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    h2 {
+      margin-top: 30px;
+      font-size: 2rem;
+    }
+    #quoteDisplay {
+      margin: 20px;
+      font-size: 1.3rem;
+      background: rgba(255, 255, 255, 0.2);
       padding: 15px;
       border-radius: 10px;
-      flex: 1;
-      margin: 5px;
+    }
+    #quoteInput {
+      padding: 10px;
+      width: 80%;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      margin: 20px 0;
     }
     button {
-      background-color: #ff6b81;
+      padding: 10px 20px;
+      background: #fff;
+      color: #764ba2;
       border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 1em;
-      color: white;
+      font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s ease;
+      border-radius: 8px;
+      transition: 0.3s;
     }
     button:hover {
-      background-color: #ff4757;
+      background: #f0f0f0;
+    }
+    .stats {
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+    footer {
+      margin-top: auto;
+      background: rgba(0, 0, 0, 0.2);
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1><i class="fas fa-keyboard"></i> Typing Speed Test</h1>
-    <div class="quote-box" id="quote">Loading quote...</div>
-    <textarea id="input" placeholder="Start typing here..." disabled></textarea>
-    <button onclick="startTest()">Start Test</button>
-    <div class="stats">
-      <div><strong>Time:</strong> <span id="time">0</span>s</div>
-      <div><strong>WPM:</strong> <span id="wpm">0</span></div>
-      <div><strong>Accuracy:</strong> <span id="accuracy">0%</span></div>
-    </div>
+  <header>Typing Test - DevanshuPython</header>
+  <h2>Typing Speed Test</h2>
+  <p id="quoteDisplay">Loading...</p>
+  <input type="text" id="quoteInput" placeholder="Start typing here..." />
+  <button onclick="checkSpeed()">Check Speed</button>
+
+  <div class="stats">
+    <p><strong>WPM:</strong> <span id="wpm">0</span></p>
+    <p><strong>Accuracy:</strong> <span id="accuracy">0%</span></p>
   </div>
 
+  <footer>
+    <p>&copy; 2025 DevanshuPython. All rights reserved.</p>
+  </footer>
+
   <script>
-    const quotes = [
-      "The quick brown fox jumps over the lazy dog.",
-      "Typing is a skill that improves with practice.",
-      "Speed and accuracy are keys to good typing.",
-      "Learning to code begins with writing clean syntax.",
-      "Stay consistent and you will master typing."
+    const quoteEl = document.getElementById("quoteDisplay");
+    const inputEl = document.getElementById("quoteInput");
+    const wpmEl = document.getElementById("wpm");
+    const accuracyEl = document.getElementById("accuracy");
+
+    let startTime, endTime;
+    const sampleQuotes = [
+      "Learning to type fast is fun and useful for everyone.",
+      "Practice every day to improve your speed.",
+      "DevanshuPython makes learning interactive and engaging.",
+      "Typing quickly saves time and boosts productivity."
     ];
 
-    let quoteEl = document.getElementById('quote');
-    let inputEl = document.getElementById('input');
-    let timeEl = document.getElementById('time');
-    let wpmEl = document.getElementById('wpm');
-    let accuracyEl = document.getElementById('accuracy');
-
-    let currentQuote = '';
-    let startTime;
-    let timer;
-
-    function startTest() {
-      currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      quoteEl.textContent = currentQuote;
-      inputEl.value = '';
-      inputEl.disabled = false;
-      inputEl.focus();
+    function newQuote() {
+      const randomIndex = Math.floor(Math.random() * sampleQuotes.length);
+      quoteEl.textContent = sampleQuotes[randomIndex];
+      inputEl.value = "";
       startTime = new Date();
-      timer = setInterval(updateStats, 1000);
     }
 
-    function updateStats() {
-      let elapsedTime = Math.floor((new Date() - startTime) / 1000);
-      timeEl.textContent = elapsedTime;
+    function checkSpeed() {
+      const quoteText = quoteEl.textContent;
+      const userInput = inputEl.value;
+      endTime = new Date();
+      const timeTaken = (endTime - startTime) / 1000 / 60; // in minutes
 
-      let typedText = inputEl.value;
-      let wordsTyped = typedText.trim().split(/\s+/).length;
-      let wpm = Math.round((wordsTyped / elapsedTime) * 60);
-      wpmEl.textContent = isNaN(wpm) ? 0 : wpm;
+      const wordsTyped = userInput.trim().split(" ").length;
+      const wpm = Math.round(wordsTyped / timeTaken);
 
+      // Accuracy calculation
       let correctChars = 0;
-      for (let i = 0; i < typedText.length; i++) {
-        if (typedText[i] === currentQuote[i]) {
+      for (let i = 0; i < userInput.length; i++) {
+        if (userInput[i] === quoteText[i]) {
           correctChars++;
         }
       }
-      let accuracy = Math.round((correctChars / currentQuote.length) * 100);
-      accuracyEl.textContent = isNaN(accuracy) ? '0%' : `${accuracy}%`;
+      const accuracy = Math.round((correctChars / quoteText.length) * 100);
 
-      if (typedText === currentQuote) {
-        clearInterval(timer);
-        inputEl.disabled = true;
-      }
+      wpmEl.textContent = wpm;
+      accuracyEl.textContent = accuracy + "%";
     }
+
+    window.onload = newQuote;
   </script>
 </body>
 </html>
