@@ -2,65 +2,141 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact - DevanshuPython</title>
-  <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    .contact-container {
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      text-align: center;
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #8ec5fc 0%, #e0c3fc 100%);
+      overflow-x: hidden;
+      transition: background 0.5s ease;
     }
-    .contact-container h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #1e3c72;
-    }
-    .contact-links a {
-      display: inline-block;
-      margin: 10px;
-      text-decoration: none;
-      padding: 12px 20px;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
+
+    .header {
+      background: #2c3e50;
       color: #fff;
-      border-radius: 12px;
-      transition: transform 0.3s ease;
+      padding: 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .contact-links a:hover {
-      transform: scale(1.1);
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      gap: 25px;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #f1c40f;
+    }
+
+    .contact-container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: #ffffffcc;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+      position: relative;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .social-links a {
+      text-decoration: none;
+      background: #1e3c72;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      width: fit-content;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .social-links a:hover {
+      background: #163561;
+      transform: scale(1.05);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px;
+      background: #2c3e50;
+      color: #fff;
+      margin-top: 60px;
+    }
+
+    /* Background animation on mouse movement */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 60%);
+      pointer-events: none;
+      transform: translate(0, 0);
+      transition: transform 0.1s ease;
     }
   </style>
 </head>
 <body>
+
   <header class="header" data-aos="fade-down">
-    <h1>DevanshuPython</h1>
+    <h1>Contact DevanshuPython</h1>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="typing-test.html">Typing Test</a></li>
         <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
   </header>
 
-  <section class="contact-container" data-aos="fade-up">
-    <h2>Connect with Devanshu</h2>
-    <div class="contact-links">
-      <a href="https://www.instagram.com/divyanshu_pratap5" target="_blank">Instagram</a>
-      <a href="https://www.linkedin.com/in/devanshu-pratap-909b7051/" target="_blank">LinkedIn</a>
-      <a href="https://github.com/devanshu5" target="_blank">GitHub</a>
-      <a href="https://www.youtube.com/@dev11ify/shorts" target="_blank">YouTube</a>
-      <a href="https://devahelper.blogspot.com/" target="_blank">My Blog</a>
-      <a href="https://devanshu5.github.io/DevanshuPython" target="_blank">My Website</a>
+  <div class="contact-container" data-aos="fade-up">
+    <h2>Connect with Me</h2>
+    <div class="social-links">
+      <a href="https://www.instagram.com/divyanshu_pratap5" target="_blank">📷 Instagram</a>
+      <a href="https://www.linkedin.com/in/devanshu-pratap-909b7051/" target="_blank">💼 LinkedIn</a>
+      <a href="https://github.com/devanshu5" target="_blank">💻 GitHub</a>
+      <a href="https://www.youtube.com/@dev11ify/shorts" target="_blank">📺 YouTube</a>
     </div>
-  </section>
+  </div>
 
   <footer class="footer" data-aos="fade-up">
     <p>&copy; 2025 DevanshuPython. All rights reserved.</p>
@@ -69,7 +145,15 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
+
+    // Mouse movement background animation
+    document.addEventListener('mousemove', e => {
+      const x = e.clientX / window.innerWidth - 0.5;
+      const y = e.clientY / window.innerHeight - 0.5;
+      document.body.style.setProperty('--x', x * 100 + 'px');
+      document.body.style.setProperty('--y', y * 100 + 'px');
+      document.body.querySelector('body::before');
+    });
   </script>
-  <script src="js/script.js"></script>
 </body>
 </html>
