@@ -1,30 +1,42 @@
-// Typing Test Logic
+let startTime, endTime;
+
 function checkTyping() {
-  const sentence = document.getElementById("sentence").innerText;
+  const sentence = document.getElementById("sentence").innerText.trim();
   const input = document.getElementById("input").value.trim();
-  const result = document.getElementById("result");
+  const resultDiv = document.getElementById("result");
 
-  const startTime = window.startTime || new Date().getTime();
-  const endTime = new Date().getTime();
-  const timeTaken = (endTime - startTime) / 1000; // seconds
-
-  const wordCount = input.split(" ").filter(Boolean).length;
-  const speed = Math.round((wordCount / timeTaken) * 60); // WPM
-
-  let correctWords = 0;
-  const inputWords = input.split(" ");
-  const sentenceWords = sentence.split(" ");
-
-  for (let i = 0; i < inputWords.length; i++) {
-    if (inputWords[i] === sentenceWords[i]) correctWords++;
+  if (!input) {
+    resultDiv.innerHTML = `<p style="color:red;">Please type something to check speed!</p>`;
+    return;
   }
 
-  const accuracy = Math.round((correctWords / sentenceWords.length) * 100);
+  // Timing calculation
+  endTime = new Date();
+  const timeTaken = (endTime - startTime) / 1000; // in seconds
+  const wordCount = input.split(/\s+/).length;
+  const wpm = Math.round((wordCount / timeTaken) * 60);
 
-  result.innerHTML = `⏱️ <strong>${speed} WPM</strong><br>✅ <strong>${accuracy}% Accuracy</strong>`;
+  // Accuracy calculation
+  let correctChars = 0;
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] === sentence[i]) {
+      correctChars++;
+    }
+  }
+
+  const accuracy = Math.round((correctChars / sentence.length) * 100);
+
+  resultDiv.innerHTML = `
+    <div style="background:#fff3cd; padding:15px; border-radius:10px; box-shadow:0 5px 20px rgba(0,0,0,0.1);">
+      <h3>📊 Your Typing Result</h3>
+      <p><strong>Time Taken:</strong> ${timeTaken.toFixed(2)} seconds</p>
+      <p><strong>Words Per Minute (WPM):</strong> ${wpm} WPM</p>
+      <p><strong>Accuracy:</strong> ${accuracy}%</p>
+    </div>
+  `;
 }
 
-// Track typing start time
-document.getElementById("input")?.addEventListener("focus", () => {
-  window.startTime = new Date().getTime();
+// Start the timer as soon as user starts typing
+document.getElementById("input").addEventListener("focus", function () {
+  if (!startTime) startTime = new Date();
 });
