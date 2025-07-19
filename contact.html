@@ -7,45 +7,581 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* All your existing styles remain unchanged here */
-    .contact-form {
-      max-width: 500px;
-      margin: 2rem auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #4895ef;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --python-yellow: #ffd43b;
+      --python-blue: #3776ab;
     }
-
-    .contact-form input,
-    .contact-form textarea {
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: 2px solid #ccc;
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
       font-family: 'Poppins', sans-serif;
-      resize: vertical;
+      background: linear-gradient(135deg, #f5f7fa 0%, #dfe7f5 100%);
+      color: var(--dark);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
-
-    .contact-form button {
+    
+    .header {
+      background: rgba(58, 12, 163, 0.95);
+      color: white;
+      padding: 1rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      margin-right: 10px;
+      color: var(--python-yellow);
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+    
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--python-yellow);
+      transition: width 0.3s ease;
+    }
+    
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .contact-hero {
+      height: 40vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    
+    .contact-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: white;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .contact-hero h1::after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      bottom: -10px;
+      left: 25%;
+      background: var(--python-yellow);
+    }
+    
+    .contact-hero p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      color: rgba(255,255,255,0.9);
+    }
+    
+    .contact-container {
+      max-width: 1200px;
+      margin: -50px auto 3rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .contact-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+      border-top: 4px solid var(--python-blue);
+    }
+    
+    .contact-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+    
+    .contact-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--python-blue) 0%, var(--primary) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.8rem;
+      color: white;
+    }
+    
+    .contact-card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--python-blue);
+    }
+    
+    .contact-card p {
+      color: #666;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    
+    .contact-link {
+      display: inline-block;
+      padding: 0.7rem 1.5rem;
       background: var(--python-blue);
       color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 50px;
       font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
     }
-
-    .contact-form button:hover {
+    
+    .contact-link:hover {
       background: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(55, 118, 171, 0.3);
+    }
+    
+    .chatbot-container {
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+    
+    .chatbot {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      overflow: hidden;
+      border-top: 4px solid var(--python-yellow);
+    }
+    
+    .chatbot-header {
+      background: var(--python-blue);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .chatbot-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--python-yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--python-blue);
+    }
+    
+    .chatbot-header h2 {
+      font-size: 1.2rem;
+    }
+    
+    .chatbot-messages {
+      height: 300px;
+      padding: 1.5rem;
+      overflow-y: auto;
+      background: #f9f9f9;
+    }
+    
+    .message {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+    }
+    
+    .bot-message {
+      align-items: flex-start;
+    }
+    
+    .user-message {
+      align-items: flex-end;
+      margin-left: auto;
+    }
+    
+    .message-content {
+      padding: 0.8rem 1.2rem;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .bot-message .message-content {
+      background: white;
+      border: 1px solid #eee;
+      border-bottom-left-radius: 5px;
+      color: #333;
+    }
+    
+    .user-message .message-content {
+      background: var(--python-blue);
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+    
+    .message-time {
+      font-size: 0.7rem;
+      color: #999;
+      margin-top: 0.3rem;
+    }
+    
+    .chatbot-input {
+      display: flex;
+      padding: 1rem;
+      background: white;
+      border-top: 1px solid #eee;
+    }
+    
+    .chatbot-input input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    .chatbot-input input:focus {
+      border-color: var(--python-blue);
+      box-shadow: 0 0 0 3px rgba(55, 118, 171, 0.2);
+    }
+    
+    .chatbot-input button {
+      width: 45px;
+      height: 45px;
+      margin-left: 0.8rem;
+      background: var(--python-blue);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .chatbot-input button:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    .typing-indicator {
+      display: flex;
+      padding: 0.5rem 1rem;
+      background: white;
+      border-radius: 18px;
+      border: 1px solid #eee;
+      width: fit-content;
+      margin-bottom: 1rem;
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: #ccc;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+    
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-5px); }
+    }
+    
+    .footer {
+      background: var(--dark);
+      color: white;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      text-align: left;
+    }
+    
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-logo i {
+      margin-right: 10px;
+      color: var(--python-yellow);
+    }
+    
+    .footer-about p {
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+    
+    .footer-social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+    
+    .footer-social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .footer-social-links a:hover {
+      background: var(--python-blue);
+      transform: translateY(-3px);
+    }
+    
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background: var(--python-yellow);
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.7rem;
+    }
+    
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--python-yellow);
+      transform: translateX(5px);
+    }
+    
+    .footer-links i {
+      font-size: 0.7rem;
+    }
+    
+    .footer-bottom {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .contact-hero h1 {
+        font-size: 2.2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      nav ul {
+        margin-top: 1rem;
+        gap: 1rem;
+      }
+      
+      .contact-hero {
+        padding: 7rem 2rem 3rem;
+      }
+      
+      .contact-container {
+        margin-top: -30px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .header {
+        padding: 0.8rem;
+      }
+      
+      .logo {
+        font-size: 1.3rem;
+      }
+      
+      nav {
+        display: none;
+      }
+      
+      nav.active {
+        display: block;
+        width: 100%;
+        margin-top: 1rem;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .hamburger {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+      
+      .contact-hero {
+        height: auto;
+        padding: 6rem 1.5rem 2rem;
+      }
+      
+      .contact-hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .contact-card {
+        padding: 1.5rem;
+      }
+      
+      .chatbot-container {
+        padding: 0 1rem;
+      }
+      
+      .chatbot-messages {
+        height: 250px;
+        padding: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Existing content remains unchanged -->
-  
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <i class="fas fa-code"></i>
+        DevanshuPython
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="typing-test.html">Typing Test</a></li>
+          <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
   <section class="contact-hero">
     <div>
       <h1>Contact & Python Help</h1>
@@ -59,15 +595,11 @@
         <i class="fas fa-envelope"></i>
       </div>
       <h2>Email Us</h2>
-      <p>Send a message directly through this form. We'll get back to you as soon as possible.</p>
-      <form action="https://formsubmit.co/dev.pratap500@gmail.com" method="POST" class="contact-form">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+      <p>For general inquiries and support, send us an email and we'll get back to you as soon as possible.</p>
+      <a href="mailto:dev.pratap500@gmail.com" class="contact-link">
+        <i class="fas fa-paper-plane"></i> Send Email
+      </a>
     </div>
-
     <div class="contact-card">
       <div class="contact-icon">
         <i class="fab fa-python"></i>
@@ -80,6 +612,195 @@
     </div>
   </div>
 
-  <!-- The rest of your code remains unchanged -->
+  <div class="chatbot-container" id="python-chatbot">
+    <div class="chatbot">
+      <div class="chatbot-header">
+        <div class="chatbot-icon">
+          <i class="fab fa-python"></i>
+        </div>
+        <h2>Python Assistant</h2>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="message bot-message">
+          <div class="message-content">
+            Hello! I'm your Python assistant. How can I help you today? You can ask me about:
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+              <li>Basic Python syntax</li>
+              <li>Common programming concepts</li>
+              <li>Problem solving approaches</li>
+              <li>Best practices</li>
+            </ul>
+          </div>
+          <div class="message-time">Just now</div>
+        </div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatbotInput" placeholder="Ask me anything about Python..." autocomplete="off">
+        <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-about">
+        <div class="footer-logo">
+          <i class="fas fa-code"></i>
+          DevanshuPython
+        </div>
+        <p>Making programming education fun, interactive and accessible for everyone.</p>
+        <div class="footer-social-links">
+          <a href="https://www.instagram.com/divyanshu_pratap5" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/devanshu-pratap-909b7051/" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/devanshu5" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://www.youtube.com/@dev11ify/shorts" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+          <li><a href="about.html"><i class="fas fa-chevron-right"></i> About</a></li>
+          <li><a href="typing-test.html"><i class="fas fa-chevron-right"></i> Typing Test</a></li>
+          <li><a href="https://devahelper.blogspot.com" target="_blank"><i class="fas fa-chevron-right"></i> Blog</a></li>
+          <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Python Tutorials</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Coding Challenges</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Teacher Tools</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Learning Paths</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 DevanshuPython. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+    
+    // Python Chatbot
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    
+    // Python knowledge base
+    const pythonKnowledge = {
+      "hello": "Hello! How can I help you with Python today?",
+      "hi": "Hi there! What Python concept would you like to know about?",
+      "what is python": "Python is a high-level, interpreted programming language known for its simplicity and readability. It's widely used for web development, data analysis, AI, and more.",
+      "how to install python": "You can download Python from the official website (python.org). For beginners, I recommend installing the latest stable version and checking 'Add Python to PATH' during installation.",
+      "print hello world": 'In Python, you can print "Hello World" with:<br><code>print("Hello World")</code>',
+      "variables": "In Python, you create variables by simply assigning a value:<br><code>x = 5</code><br><code>name = 'Devanshu'</code><br>Python is dynamically typed, so you don't need to declare variable types.",
+      "lists": "Lists are ordered, mutable collections in Python:<br><code>my_list = [1, 2, 3]</code><br>You can access elements with indexing: <code>my_list[0] # returns 1</code>",
+      "dictionaries": "Dictionaries store key-value pairs:<br><code>my_dict = {'name': 'Devanshu', 'age': 25}</code><br>Access values with: <code>my_dict['name']</code>",
+      "functions": "Functions are defined with <code>def</code>:<br><code>def greet(name):<br>&nbsp;&nbsp;return f'Hello {name}!'</code>",
+      "loops": "Python has <code>for</code> and <code>while</code> loops:<br><code>for i in range(5):<br>&nbsp;&nbsp;print(i)</code><br><code>while x < 10:<br>&nbsp;&nbsp;print(x)<br>&nbsp;&nbsp;x += 1</code>",
+      "if else": "Conditional statements in Python:<br><code>if x > 10:<br>&nbsp;&nbsp;print('Big')<br>elif x > 5:<br>&nbsp;&nbsp;print('Medium')<br>else:<br>&nbsp;&nbsp;print('Small')</code>",
+      "strings": "Strings are immutable sequences of characters. You can use single or double quotes:<br><code>s = 'Python'</code><br>Common operations: <code>len(s), s.upper(), s.split()</code>",
+      "modules": "Python modules are files containing Python code. Import them with:<br><code>import math</code><br><code>from datetime import date</code>",
+      "classes": "Classes are blueprints for objects:<br><code>class Person:<br>&nbsp;&nbsp;def __init__(self, name):<br>&nbsp;&nbsp;&nbsp;&nbsp;self.name = name</code>",
+      "error handling": "Use try-except blocks:<br><code>try:<br>&nbsp;&nbsp;x = 1/0<br>except ZeroDivisionError:<br>&nbsp;&nbsp;print('Cannot divide by zero')</code>",
+      "pip": "pip is Python's package installer. Common commands:<br><code>pip install package_name</code><br><code>pip list</code> (show installed packages)",
+      "virtual environment": "Create isolated Python environments with:<br><code>python -m venv myenv</code><br>Activate with:<br><code>source myenv/bin/activate</code> (Linux/Mac)<br><code>myenv\\Scripts\\activate</code> (Windows)",
+      "thank you": "You're welcome! Is there anything else you'd like to know about Python?",
+      "bye": "Goodbye! Happy coding with Python! 🐍",
+      "default": "I'm not sure I understand. Could you rephrase your question about Python? Here are some topics I know about: variables, lists, functions, loops, classes, strings, error handling."
+    };
+    
+    // Add a message to the chat
+    function addMessage(content, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+      
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'message-content';
+      contentDiv.innerHTML = content;
+      
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'message-time';
+      timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      messageDiv.appendChild(contentDiv);
+      messageDiv.appendChild(timeDiv);
+      
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    // Show typing indicator
+    function showTyping() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'typing-indicator';
+      typingDiv.id = 'typingIndicator';
+      
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'typing-dot';
+        typingDiv.appendChild(dot);
+      }
+      
+      chatbotMessages.appendChild(typingDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    // Hide typing indicator
+    function hideTyping() {
+      const typing = document.getElementById('typingIndicator');
+      if (typing) typing.remove();
+    }
+    
+    // Process user input
+    function processInput() {
+      const userInput = chatbotInput.value.trim().toLowerCase();
+      if (!userInput) return;
+      
+      // Add user message
+      addMessage(userInput, true);
+      chatbotInput.value = '';
+      
+      // Show typing indicator
+      showTyping();
+      
+      // Simulate bot thinking
+      setTimeout(() => {
+        hideTyping();
+        
+        // Find the best matching response
+        let response = pythonKnowledge["default"];
+        for (const [key, value] of Object.entries(pythonKnowledge)) {
+          if (userInput.includes(key)) {
+            response = value;
+            break;
+          }
+        }
+        
+        // Add bot response
+        addMessage(response);
+      }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
+    }
+    
+    // Event listeners
+    sendMessageBtn.addEventListener('click', processInput);
+    chatbotInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') processInput();
+    });
+    
+    // Initial greeting
+    setTimeout(() => {
+      addMessage("Try asking me things like:<br>- How to create a function?<br>- What are Python lists?<br>- Show me a loop example");
+    }, 1500);
+  </script>
 </body>
 </html>
