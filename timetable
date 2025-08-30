@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Timetable Manager</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f1f1f1;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #27ae60;
+        }
+        .btn-export {
+            background-color: #e74c3c;
+        }
+        .btn-export:hover {
+            background-color: #c0392b;
+        }
+        .clash-warning {
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .teacher-list {
+            margin-bottom: 20px;
+        }
+        .teacher-item {
+            padding: 10px;
+            background: #f1f1f1;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teacher Timetable Management System</h1>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Add teachers and their available periods using the Teachers tab</li>
+                <li>Set up the timetable structure (days and periods) in the Settings tab</li>
+                <li>Assign teachers to classes and periods in the Timetable tab</li>
+                <li>Check for clashes and resolve them using the warnings provided</li>
+                <li>Export the final timetable to Excel when complete</li>
+            </ol>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('teachers')">Teachers</div>
+            <div class="tab" onclick="switchTab('settings')">Settings</div>
+            <div class="tab" onclick="switchTab('timetable')">Timetable</div>
+            <div class="tab" onclick="switchTab('export')">Export</div>
+        </div>
+
+        <div id="teachers-tab" class="tab-content active">
+            <h2>Manage Teachers</h2>
+            <div class="controls">
+                <input type="text" id="teacher-name" placeholder="Teacher Name">
+                <button onclick="addTeacher()">Add Teacher</button>
+            </div>
+            
+            <div id="teacher-list" class="teacher-list">
+                <!-- Teachers will be listed here -->
+            </div>
+        </div>
+
+        <div id="settings-tab" class="tab-content">
+            <h2>Timetable Settings</h2>
+            <div class="controls">
+                <div>
+                    <label for="days">Number of Days:</label>
+                    <input type="number" id="days" min="1" max="7" value="5">
+                </div>
+                <div>
+                    <label for="periods">Periods per Day:</label>
+                    <input type="number" id="periods" min="1" max="10" value="8">
+                </div>
+                <button onclick="updateStructure()">Update Structure</button>
+            </div>
+        </div>
+
+        <div id="timetable-tab" class="tab-content">
+            <h2>Timetable</h2>
+            <div id="timetable-container">
+                <!-- Timetable will be generated here -->
+            </div>
+            <div id="clash-warnings"></div>
+        </div>
+
+        <div id="export-tab" class="tab-content">
+            <h2>Export Timetable</h2>
+            <p>Click the button below to export the timetable to Excel format.</p>
+            <button class="btn-export" onclick="exportToExcel()">Export to Excel</button>
+            <div id="export-status"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let teachers = [];
+        let timetable = [];
+        let days = 5;
+        let periodsPerDay = 8;
+        const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+        // Initialize the application
+        function init() {
+            loadFromLocalStorage();
+            renderTeacherList();
+            generateTimetable();
+            checkClashes();
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab:nth-child(${getTabIndex(tabName) + 1})`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        function getTabIndex(tabName) {
+            const tabs = ['teachers', 'settings', 'timetable', 'export'];
+            return tabs.indexOf(tabName);
+        }
+
+        // Teacher management
+        function addTeacher() {
+            const nameInput = document.getElementById('teacher-name');
+            const name = nameInput.value.trim();
+            
+            if (name && !teachers.includes(name)) {
+                teachers.push(name);
+                nameInput.value = '';
+                renderTeacherList();
+                saveToLocalStorage();
+            } else if (teachers.includes(name)) {
+                alert('This teacher already exists!');
+            }
+        }
+
+        function renderTeacherList() {
+            const teacherList = document.getElementById('teacher-list');
+            teacherList.innerHTML = '';
+            
+            teachers.forEach(teacher => {
+                const div = document.createElement('div');
+                div.className = 'teacher-item';
+                div.textContent = teacher;
+                teacherList.appendChild(div);
+            });
+        }
+
+        // Timetable structure
+        function updateStructure() {
+            days = parseInt(document.getElementById('days').value) || 5;
+            periodsPerDay = parseInt(document.getElementById('periods').value) || 8;
+            generateTimetable();
+            saveToLocalStorage();
+        }
+
+        function generateTimetable() {
+            const container = document.getElementById('timetable-container');
+            container.innerHTML = '';
+            
+            // Create table header
+            let tableHTML = '<table><tr><th>Day/Period</th>';
+            for (let p = 1; p <= periodsPerDay; p++) {
+                tableHTML += `<th>Period ${p}</th>`;
+            }
+            tableHTML += '</tr>';
+            
+            // Initialize timetable data structure if needed
+            if (timetable.length !== days) {
+                timetable = [];
+                for (let d = 0; d < days; d++) {
+                    timetable[d] = [];
+                    for (let p = 0; p < periodsPerDay; p++) {
+                        timetable[d][p] = { teacher: '', class: '' };
+                    }
+                }
+            }
+            
+            // Create rows for each day
+            for (let d = 0; d < days; d++) {
+                tableHTML += `<tr><th>${daysOfWeek[d]}</th>`;
+                
+                for (let p = 0; p < periodsPerDay; p++) {
+                    const cellData = timetable[d][p] || { teacher: '', class: '' };
+                    tableHTML += `
+                        <td>
+                            <select class="teacher-select" data-day="${d}" data-period="${p}" onchange="updateTimetable(this)">
+                                <option value="">-- Select Teacher --</option>
+                                ${teachers.map(t => `<option value="${t}" ${cellData.teacher === t ? 'selected' : ''}>${t}</option>`).join('')}
+                            </select>
+                            <input type="text" class="class-input" data-day="${d}" data-period="${p}" placeholder="Class" value="${cellData.class || ''}" onchange="updateTimetable(this)">
+                        </td>
+                    `;
+                }
+                
+                tableHTML += '</tr>';
+            }
+            
+            tableHTML += '</table>';
+            container.innerHTML = tableHTML;
+        }
+
+        function updateTimetable(element) {
+            const day = parseInt(element.dataset.day);
+            const period = parseInt(element.dataset.period);
+            
+            if (element.classList.contains('teacher-select')) {
+                timetable[day][period].teacher = element.value;
+            } else if (element.classList.contains('class-input')) {
+                timetable[day][period].class = element.value;
+            }
+            
+            saveToLocalStorage();
+            checkClashes();
+        }
+
+        // Clash detection
+        function checkClashes() {
+            const warningsContainer = document.getElementById('clash-warnings');
+            warningsContainer.innerHTML = '';
+            
+            const teacherPeriods = {};
+            let hasClashes = false;
+            
+            // Check for teacher clashes
+            for (let d = 0; d < days; d++) {
+                for (let p = 0; p < periodsPerDay; p++) {
+                    const teacher = timetable[d][p].teacher;
+                    const className = timetable[d][p].class;
+                    
+                    if (teacher) {
+                        if (!teacherPeriods[teacher]) {
+                            teacherPeriods[teacher] = [];
+                        }
+                        
+                        // Check if teacher is already teaching in this period
+                        const existingAssignment = teacherPeriods[teacher].find(assignment => 
+                            assignment.day === d && assignment.period === p
+                        );
+                        
+                        if (existingAssignment) {
+                            hasClashes = true;
+                            warningsContainer.innerHTML += `
+                                <div class="clash-warning">
+                                    CLASH: ${teacher} is assigned to multiple classes on ${daysOfWeek[d]} Period ${p+1}
+                                </div>
+                            `;
+                        } else {
+                            teacherPeriods[teacher].push({ day: d, period: p, class: className });
+                        }
+                    }
+                }
+            }
+            
+            if (!hasClashes) {
+                warningsContainer.innerHTML = '<div class="status success">No clashes detected!</div>';
+            }
+        }
+
+        // Export functionality
+        function exportToExcel() {
+            // Create a workbook
+            const wb = XLSX.utils.book_new();
+            
+            // Create teacher-wise data
+            const teacherData = [['Teacher', 'Day', 'Period', 'Class']];
+            for (let d = 0; d < days; d++) {
+                for (let p = 0; p < periodsPerDay; p++) {
+                    const assignment = timetable[d][p];
+                    if (assignment.teacher) {
+                        teacherData.push([
+                            assignment.teacher,
+                            daysOfWeek[d],
+                            `Period ${p+1}`,
+                            assignment.class
+                        ]);
+                    }
+                }
+            }
+            
+            const teacherWS = XLSX.utils.aoa_to_sheet(teacherData);
+            XLSX.utils.book_append_sheet(wb, teacherWS, "Teacher Wise");
+            
+            // Create class-wise data
+            const classData = [['Class', 'Day', 'Period', 'Teacher']];
+            const classMap = {};
+            
+            for (let d = 0; d < days; d++) {
+                for (let p = 0; p < periodsPerDay; p++) {
+                    const assignment = timetable[d][p];
+                    if (assignment.class) {
+                        const classKey = assignment.class;
+                        if (!classMap[classKey]) {
+                            classMap[classKey] = [];
+                        }
+                        classMap[classKey].push({
+                            day: d,
+                            period: p,
+                            teacher: assignment.teacher
+                        });
+                    }
+                }
+            }
+            
+            for (const className in classMap) {
+                classMap[className].forEach(assignment => {
+                    classData.push([
+                        className,
+                        daysOfWeek[assignment.day],
+                        `Period ${assignment.period+1}`,
+                        assignment.teacher
+                    ]);
+                });
+            }
+            
+            const classWS = XLSX.utils.aoa_to_sheet(classData);
+            XLSX.utils.book_append_sheet(wb, classWS, "Class Wise");
+            
+            // Create day-wise timetable data
+            const timetableData = [];
+            
+            // Header row
+            const header = ['Period'];
+            for (let d = 0; d < days; d++) {
+                header.push(daysOfWeek[d]);
+            }
+            timetableData.push(header);
+            
+            // Data rows
+            for (let p = 0; p < periodsPerDay; p++) {
+                const row = [`Period ${p+1}`];
+                for (let d = 0; d < days; d++) {
+                    const assignment = timetable[d][p];
+                    row.push(assignment.teacher ? `${assignment.teacher} (${assignment.class})` : '');
+                }
+                timetableData.push(row);
+            }
+            
+            const timetableWS = XLSX.utils.aoa_to_sheet(timetableData);
+            XLSX.utils.book_append_sheet(wb, timetableWS, "Timetable");
+            
+            // Export the workbook
+            XLSX.writeFile(wb, "Teacher_Timetable.xlsx");
+            
+            document.getElementById('export-status').innerHTML = `
+                <div class="status success">Timetable successfully exported to Excel!</div>
+            `;
+        }
+
+        // Local storage functions
+        function saveToLocalStorage() {
+            const data = {
+                teachers,
+                timetable,
+                days,
+                periodsPerDay
+            };
+            localStorage.setItem('timetableData', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const data = JSON.parse(localStorage.getItem('timetableData'));
+            if (data) {
+                teachers = data.teachers || [];
+                timetable = data.timetable || [];
+                days = data.days || 5;
+                periodsPerDay = data.periodsPerDay || 8;
+                
+                document.getElementById('days').value = days;
+                document.getElementById('periods').value = periodsPerDay;
+            }
+        }
+
+        // Initialize the application
+        window.onload = init;
+    </script>
+</body>
+</html>
