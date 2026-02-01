@@ -64,7 +64,7 @@ const Components = {
             <h4 class="footer-heading">Get in Touch</h4>
             <ul>
                 <li><a href="mailto:support@devanshupython.com">support@devanshupython.com</a></li>
-                <li><a href="#">+91 98765 43210</a></li>
+
                 <li><a href="#">New Delhi, India</a></li>
             </ul>
         </div>
