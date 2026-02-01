@@ -12,27 +12,8 @@
 </head>
 
 <body>
-  <header class="header">
-    <div class="header-container">
-      <div class="logo">
-        <i class="fas fa-code"></i>
-        DevanshuPython
-      </div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="typing-test.html">Typing Test</a></li>
-          <li><a href="timetable" target="_blank">Timetable</a></li>
-          <li><a href="https://devahelper.blogspot.com" target="_blank">Blog</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-      <div class="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-  </header>
+  <!-- Dynamic Header -->
+  <header class="header"></header>
 
   <section class="hero" data-aos="fade-up">
     <div class="floating-elements">
@@ -105,4 +86,45 @@
           <div class="stat-number" data-count="10">0</div>
           <div class="stat-label">Satisfaction Rate</div>
         </div>
-        <div class="stat-item" data-aos="fade-up" data-aos
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+          <div class="stat-number" data-count="50">0</div>
+          <div class="stat-label">Tutorials</div>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+          <div class="stat-number" data-count="100">0</div>
+          <div class="stat-label">Code Commits</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Footer -->
+  <footer class="footer"></footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    AOS.init();
+
+    // Animate stats
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+      const target = +stat.getAttribute('data-count');
+      const increment = target / 200;
+
+      const updateCount = () => {
+        const count = +stat.innerText;
+        if (count < target) {
+          stat.innerText = Math.ceil(count + increment);
+          setTimeout(updateCount, 20);
+        } else {
+          stat.innerText = target + "+";
+        }
+      };
+
+      updateCount();
+    });
+  </script>
+</body>
+
+</html>
